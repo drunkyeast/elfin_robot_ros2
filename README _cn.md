@@ -73,11 +73,12 @@ Tips:
 
 ---
 
-### 使用真实的Elfin机器人
+### 使用真实的Elfin机器人（注意：我对这段进行了修改以适配eo5-pro）
 
-***下面给出的是启动Elfin3的一系列命令。启动Elfin5和Elfin10的方法与之类似，只要在相应的地方替换掉相应的前缀即可。***
+***下面给出的是启动Elfin3（我已经改成elfin5前缀了，华为宝安这边机械臂型号是EO5-pro， 我猜测是elfin5的升级版，用elfin5前缀就好）的一系列命令。启动Elfin5和Elfin10的方法与之类似，只要在相应的地方替换掉相应的前缀即可。***
 
 先把购买机器人时得到的elfin_drivers.yaml放到elfin_robot_bringup/config/文件夹下,r然后把elfin_drivers.yaml中的参数复制到elfin_robot_bringup/config/elfin_arm_control.yaml的ros__parameters下。
+（关于这两个文件，需要修改网卡，enp4s0是对应linux主机的网卡， 还有原点改成count_zeros: [2417075, -618046, -1051464, -1224624, 6701188, 4142843]， 已经修改， 原点再配置说明书上有， 但是配置说明书上的数据是错误的， 陈峻威@华沿机器人 提供了正确的参数）
 
 将Elfin通过网线连接到电脑。先通过`ifconfig`指令来确定与Elfin连接的网卡名称。本软件包默认的名称是eth0 。假如当前名称不是eth0的话，请对elfin_robot_bringup/config/elfin_arm_control.yaml的相应部分进行修改。
 ```
@@ -86,23 +87,23 @@ elfin_ethernet_name: eth0
 
 启动Elfin硬件，Elfin的控制需要操作系统的实时性支持，运行下面的命令前请先为你的Linux系统内核打好实时补丁。打补丁的方法可以参考这个[教程](http://www.jianshu.com/p/8787e45a9e01)。Elfin机械臂有两种不同版本的EtherCAT从站，在启动硬件前，请先确认你的Elfin的从站版本。
 ```sh
-$ sudo chrt 10 bash
-$ ros2 launch elfin3_ros2_moveit2 elfin3_moveit.launch.py
+sudo chrt 10 bash
+ros2 launch elfin5_ros2_moveit2 elfin5_moveit.launch.py
 ```
 运行MoveIt!模块, RViz界面:
 ```sh
-$ sudo su
-$ ros2 launch elfin3_ros2_moveit elfin3_moveit_rviz.launch.py
+sudo su
+ros2 launch elfin5_ros2_moveit2 elfin5_moveit_rviz.launch.py
 ```
 运行后台程序：
 ```sh
-$ sudo su
-$ ros2 launch elfin_ros2_moveit2 elfin3_basic_api.launch.py
+sudo su
+ros2 launch elfin5_ros2_moveit2 elfin5_basic_api.launch.py
 ```
 运行Elfin Control Panel界面
 ```sh
-$ sudo su
-$ ros2 launch elfin_basic_api elfin_gui.launch.py
+sudo su
+ros2 launch elfin_basic_api elfin_gui.launch.py
 ```
 
 用Elfin Control Panel界面给Elfin使能指令，如果此时没有报错，直接按下"Servo On"即可使能。如果报错，需先按"Clear Fault"清错后再按下"Servo On"使能。

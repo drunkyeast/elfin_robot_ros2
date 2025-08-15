@@ -86,21 +86,21 @@ int16_t ElfinEtherCATIOClient::readInput_unit(int n)
 {
 
     int16_t map;
-    map = (manager_->readSDO<int16_t>(4, 0x6001, 0x01)); // read the end DI
+    map = (manager_->readSDO<int16_t>(5, 0x6001, 0x01)); // read the end DI
     return map;
 }
 
 int32_t ElfinEtherCATIOClient::readOutput_unit(int n)
 {
     int32_t map;
-    map = (manager_->readSDO<int32_t>(4, 0x7001, 0x01)) << 12; 
+    map = (manager_->readSDO<int32_t>(5, 0x7001, 0x01)) << 12; 
     return map;
 }
 
 void ElfinEtherCATIOClient::writeOutput_unit(int n, int32_t val)
 {
 
-    manager_->writeSDO<int32_t>(4,0x7001,0x01, val >> 12);
+    manager_->writeSDO<int32_t>(5,0x7001,0x01, val >> 12);
 }
 
 
@@ -138,7 +138,7 @@ int32_t ElfinEtherCATIOClient::readDO_unit(int n)
     usleep(50000);
     // 0x310C, DO.
     int32_t map;
-    map = (manager_->readSDO<int32_t>(4, 0x7001, 0x0)) << 12; // read the end DO
+    map = (manager_->readSDO<int32_t>(5, 0x7001, 0x0)) << 12; // read the end DO
     manager_->writeSDO<int>(3,0x3100,0x0,0); // Modbus DO command 0
     usleep(50000);
     return map;
@@ -170,12 +170,12 @@ std::string ElfinEtherCATIOClient::getTxSDO()
     char temp[8];
     std::string result="slave";
     result.reserve(160);
-    result.append("4_txpdo:\n");
+    result.append("5_txpdo:\n");
     for (unsigned i = 0; i < length; ++i)
     {
         map[i] = 0x00;
         sprintf(temp,"0x%.2x",(uint8_t)map[i]);
-        result.append(temp, 4);
+        result.append(temp, 5);
         result.append(":");
     }
     result.append("\n");
@@ -189,12 +189,12 @@ std::string ElfinEtherCATIOClient::getRxSDO()
     char temp[8];
     std::string result="slave";
     result.reserve(160);
-    result.append("4_rxpdo:\n");
+    result.append("5_rxpdo:\n");
     for (unsigned i = 0; i < length; ++i)
     {
         map[i] = 0x00;
         sprintf(temp,"0x%.2x",(uint8_t)map[i]);
-        result.append(temp, 4);
+        result.append(temp, 5);
         result.append(":");
     }
     result.append("\n");

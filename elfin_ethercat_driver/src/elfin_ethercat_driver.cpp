@@ -44,7 +44,7 @@ namespace elfin_ethercat_driver {
 ElfinEtherCATDriver::ElfinEtherCATDriver(EtherCatManager *manager, std::string driver_name,const rclcpp::Node::SharedPtr& node):
     driver_name_(driver_name),ed_nh_(node)
 {
-    int64_t slave_no_array_default[3]={1, 2, 3};
+    int64_t slave_no_array_default[3]={2, 3, 4};
     std::vector<int64_t> slave_no_default;
     slave_no_default.clear();
     slave_no_default.reserve(3);
@@ -52,7 +52,7 @@ ElfinEtherCATDriver::ElfinEtherCATDriver(EtherCatManager *manager, std::string d
     {
         slave_no_default.push_back(slave_no_array_default[i]);
     }
-    ed_nh_->declare_parameter("slave_no",std::vector<int64_t>({1, 2, 3}));
+    ed_nh_->declare_parameter("slave_no",std::vector<int64_t>({2, 3, 4}));
     ed_nh_->get_parameter_or("slave_no", slave_no_, slave_no_default);
 
     // Initialize joint_names_
@@ -197,7 +197,7 @@ ElfinEtherCATDriver::ElfinEtherCATDriver(EtherCatManager *manager, std::string d
     }
 
     // Initialize io_slave_no_
-    int64_t io_slave_no_array_default[1]={4};
+    int64_t io_slave_no_array_default[1]={5};
     std::vector<int64_t> io_slave_no_default;
     io_slave_no_default.clear();
     io_slave_no_default.reserve(1);
@@ -205,7 +205,7 @@ ElfinEtherCATDriver::ElfinEtherCATDriver(EtherCatManager *manager, std::string d
     {
         io_slave_no_default.push_back(io_slave_no_array_default[i]);
     }
-    ed_nh_->declare_parameter("io_slave_no",std::vector<int64_t>({4}));
+    ed_nh_->declare_parameter("io_slave_no",std::vector<int64_t>({5}));
     ed_nh_->get_parameter_or("io_slave_no", io_slave_no_, io_slave_no_default);
 
     // Initialize ethercat_io_client_
