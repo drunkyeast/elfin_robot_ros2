@@ -58,13 +58,13 @@ $ source install/setup.bash
 
 用Gazebo仿真和Moveit请运行：
 ```sh
-$ ros2 launch elfin3_ros2_moveit2 elfin3.launch.py
+ros2 launch elfin5_ros2_moveit2 elfin5.launch.py
 ```
 
 运行后台程序及Elfin Control Panel界面：
 ```sh
-$ ros2 launch elfin3_ros2_moveit2 elfin3_basic_api.launch.py
-$ ros2 launch elfin_basic_api fake_elfin_gui.launch.py
+ros2 launch elfin5_ros2_moveit2 elfin5_basic_api.launch.py
+ros2 launch elfin_basic_api fake_elfin_gui.launch.py
 ```
 
 > 关于MoveIt!的使用方法可以参考[docs/moveit_plugin_tutorial.md](docs/moveit_plugin_tutorial.md)  

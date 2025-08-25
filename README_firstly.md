@@ -13,3 +13,7 @@
 7. 控制面板先servo off（去使能），然后再去示教器上面断电源，示教器上面右上角关闭系统。最后把网线恢复最初模样。
 
 ### 
+sudo systemctl stop spacenavd
+sudo /usr/local/bin/spacenavd -d
+ros2 run spacenav spacenav_node 
+然后看README_cn.md
