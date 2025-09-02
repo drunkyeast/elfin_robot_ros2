@@ -50,6 +50,7 @@ make
 ```sh
 source /opt/ros/foxy/setup.bash                                     # ros2环境变量
 source /home/ubuntu/ros2_ws/install/setup.bash                      # 编译安装的环境变量，注意路径
+export ROS_DOMAIN_ID=0                                              
 export LD_LIBRARY_PATH=/opt/ros/foxy/lib/spacenav:$LD_LIBRARY_PATH  # 编译安装的鼠标驱动环境变量
 ```
 
