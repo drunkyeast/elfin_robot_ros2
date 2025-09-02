@@ -119,3 +119,12 @@ self.command_repeat_count = 0    # 相同指令的重复次数
 self.max_repeat_count = 1        # 最大允许重复次数（避免完全不发送）
 ```
 主要是deadzone调整灵敏度，stop_timeout松开鼠标后多久后停止运动，min_interval是命令发送的帧率0.05对应20帧。max_repeat_count不需要了，就设置成1就好，是之前处理bug的残留。
+
+## 采集数据
+可以`ros2 topic echo /joint_states`来查看这个话题发布的数据
+`ros2 topic list -t` 可以查看话题名字和消息类型
+```sh
+# 采集话题/joint_states的数据，存放到/tmp/tos2-record-1中
+rm /tmp/ros2-record-1 -rf
+ros2 bag record /joint_states -o /tmp/ros2-record-1
+```
