@@ -100,5 +100,21 @@ python3 mouseScripts/gripper_button_control.py      # 启动夹爪的控制脚�
 # 终端4 机械臂末端
 sudo su
 cd /home/ubuntu/ros2_ws/src/elfin_robot_ros2        # 注意修改路径
-python3 mouseScripts/version1.py    # 启动机械臂末端的控制脚本
+python3 mouseScripts/version2.py    # 启动机械臂末端的控制脚本 version2调参后的，比version1更好用。
 ```
+## 关于mouseScripts，以及调参
+```python
+# 控制参数
+self.deadzone = 0.03      # 死区阈值（降低以提高灵敏度）
+self.last_call_time = 0.0   # 上次调用时间
+self.min_interval = 0.05    # 最小调用间隔50ms（提高响应性）
+self.last_input_time = 0.0  # 上次有输入的时间
+self.stop_timeout = 0.1     # 停止超时时间100ms
+self.is_moving = False      # 是否正在运动
+
+# 参数缓存，避免重复调用相同参数的服务
+self.last_command_data = None    # 上次发送的指令数据
+self.command_repeat_count = 0    # 相同指令的重复次数
+self.max_repeat_count = 1        # 最大允许重复次数（避免完全不发送）
+```
+主要是deadzone调整灵敏度，stop_timeout松开鼠标后多久后停止运动，min_interval是命令发送的帧率0.05对应20帧。max_repeat_count不需要了，就设置成1就好，是之前处理bug的残留。

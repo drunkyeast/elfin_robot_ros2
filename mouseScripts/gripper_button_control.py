@@ -98,6 +98,9 @@ class GripperButtonControl(Node):
             
             # 使用无参模式：1表示夹爪开
             flag = self.clawControl.runWithoutParam(9, 1)
+            # 使用有参模式，更细粒的控制。开的时候力矩无所谓
+            # flag = self.clawControl.runWithParam(9, 20, 50, 100)
+            # self.get_logger().info(f"有参模式,夹爪开, 位置20, 速度50, 力矩100: {flag}")
             
             if flag:
                 self.gripper_state = True
@@ -116,7 +119,10 @@ class GripperButtonControl(Node):
             print(f"[{timestamp}] ✊ 执行夹爪合...")
             
             # 使用无参模式：2表示夹爪合
-            flag = self.clawControl.runWithoutParam(9, 2)
+            # flag = self.clawControl.runWithoutParam(9, 2)
+            # 使用有参模式, 主要是力矩参数, 设为50差不多是最小了。参数范围都是0~255。
+            flag = self.clawControl.runWithParam(9, 255, 50, 50)
+            self.get_logger().info(f"有参模式,夹爪合, 位置255, 速度50, 力矩50: {flag}")
             
             if flag:
                 self.gripper_state = False
