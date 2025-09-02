@@ -7,8 +7,6 @@ import time
 import sys
 import os
 
-# 添加夹爪SDK路径
-sys.path.append('/home/ubuntu/clip_junduo')
 from jodellSdk.jodellSdkDemo import RgClawControl
 
 class GripperButtonControl(Node):
@@ -39,17 +37,25 @@ class GripperButtonControl(Node):
     def init_gripper(self):
         """初始化夹爪连接"""
         try:
-            self.claw_control = RgClawControl()
+            self.clawControl = RgClawControl()
             
             # 搜索串口并建立连接
-            com_list = self.claw_control.searchCom()
+            com_list = self.clawControl.searchCom()
             if not com_list:
                 self.get_logger().error("❌ 未找到夹爪设备")
                 raise Exception("未找到夹爪设备")
                 
-            flag = self.claw_control.serialOperation(com_list[0], 115200, 1)
+            flag = self.clawControl.serialOperation(com_list[0], 115200, 1)
             if flag:
                 self.get_logger().info(f"✅ 夹爪连接成功: {com_list[0]}")
+                # 先去使能，再上使能，避免潜在bug。
+                flag = self.clawControl.enableClamp(9, False) # 去使能，id为9的夹爪
+                self.get_logger().info(f"去使能: {flag}")
+                time.sleep(0.5)
+                flag = self.clawControl.enableClamp(9, True) # 上使能，id为9的夹爪
+                self.get_logger().info(f"使能: {flag}")
+                self.get_logger().info(f"第一次上使能成功的话，夹爪会开合一次，等待3秒")
+                time.sleep(3)
             else:
                 self.get_logger().error("❌ 夹爪连接失败")
                 raise Exception("夹爪连接失败")
@@ -91,7 +97,7 @@ class GripperButtonControl(Node):
             print(f"[{timestamp}] 🖐️  执行夹爪开...")
             
             # 使用无参模式：1表示夹爪开
-            flag = self.claw_control.runWithoutParam(9, 1)
+            flag = self.clawControl.runWithoutParam(9, 1)
             
             if flag:
                 self.gripper_state = True
@@ -110,7 +116,7 @@ class GripperButtonControl(Node):
             print(f"[{timestamp}] ✊ 执行夹爪合...")
             
             # 使用无参模式：2表示夹爪合
-            flag = self.claw_control.runWithoutParam(9, 2)
+            flag = self.clawControl.runWithoutParam(9, 2)
             
             if flag:
                 self.gripper_state = False
@@ -125,10 +131,10 @@ class GripperButtonControl(Node):
     def get_gripper_status(self):
         """获取夹爪状态（可选功能）"""
         try:
-            pos = self.claw_control.getClampCurrentLocation(9)
-            speed = self.claw_control.getClampCurrentSpeed(9)
-            torque = self.claw_control.getClampCurrentTorque(9)
-            status = self.claw_control.getClampCurrentState(9)
+            pos = self.clawControl.getClampCurrentLocation(9)
+            speed = self.clawControl.getClampCurrentSpeed(9)
+            torque = self.clawControl.getClampCurrentTorque(9)
+            status = self.clawControl.getClampCurrentState(9)
             return pos, speed, torque, status
         except Exception as e:
             self.get_logger().warn(f"获取夹爪状态失败: {e}")
